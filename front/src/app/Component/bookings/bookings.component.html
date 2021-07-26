@@ -1,0 +1,249 @@
+<ng-template #templateCampus>
+  <p>No se encontraron campus</p>
+  <button (click)="getCampuses()" nz-button nzType="primary" [disabled]="isLoading">Actualizar</button>
+</ng-template>
+<ng-template #templateAulas>
+  <p>No se encontraron Aulas</p>
+  <button (click)="getAulas()" nz-button nzType="primary" [disabled]="isLoading">Actualizar</button>
+</ng-template>
+<nz-spin [nzSpinning]="isLoading">
+  <nz-row nzJustify="end" style="margin-bottom: 15px;">
+    <nz-col>
+      <!--<button nz-button nzType="primary" (click)="showAddCityModal()">-->
+        <!--<span>Add a campus</span>-->
+      <!--</button>-->
+      <nz-modal
+        [(nzVisible)]="isAddCityModalVisible"
+        nzTitle="{{this.editMode ? 'Update' : 'Add'}} City"
+        (nzOnCancel)="handleAddCityModalCancel()"
+        (nzOnOk)="handleAddCityModalOk()"
+        [nzOkLoading]="isOkCityModalLoading"
+      >
+        <app-add-city [editCampus]="this.isEditMode()"></app-add-city>
+      </nz-modal>
+    </nz-col>
+    <nz-col nzOffset="1">
+      <!--<button (click)="showAddCinemaModal()" nz-button nzType="primary" [disabled]="isLoading">Add a campus</button>-->
+      <nz-modal
+        [(nzVisible)]="isAddCinemaModalVisible"
+        nzTitle="{{this.editCinemaMode ? 'Update' : 'Add'}} Cinema"
+        (nzOnCancel)="handleAddCinemaModalOk()"
+        (nzOnOk)="handleAddCinemaModalCancel()"
+        [nzOkLoading]="isOkCityModalLoading"
+      >
+        <app-campus-form [editCinema]="this.isCinemaEditMode()"
+                         [opened]="this.isAddCinemaModalVisible"></app-campus-form>
+      </nz-modal>
+    </nz-col>
+  </nz-row>
+  <nz-row nzJustify="start" nzAlign="middle">
+    <nz-col>
+      <label class="labelTitle">Cod. estudiante: </label>
+    </nz-col>
+    <nz-col nzJustify="start"  nzSpan="4" nzOffset="1">
+      <label >{{codEstudiante}} </label>
+    </nz-col>
+  </nz-row>
+  <nz-row nzJustify="start" nzAlign="middle">
+    <nz-col>
+      <label class="labelTitle">Clase: </label>
+    </nz-col>
+    <nz-col nzJustify="start"  nzSpan="4" nzOffset="1" >
+      <label >Global Perspective 2021 </label>
+    </nz-col>
+  </nz-row>
+  <nz-row nzJustify="start" nzAlign="middle">
+    <nz-col>
+      <label class="labelTitle">Campus</label>
+    </nz-col>
+    <nz-col nzSpan="4" nzOffset="1">
+     <!--<nz-input-group [(ngModel)]="selectedCampus">{{selectedCampus?.nombre}}</nz-input-group>-->
+      <nz-select nzAllowClear nzPlaceHolder="Seleccione un campus"
+                 [(ngModel)]="selectedCampus"
+                 [nzNotFoundContent]="templateCampus"
+                 [nzAllowClear]="false"
+                 (ngModelChange)="onSelectCampus()">
+        <nz-option *ngFor="let campus of campusOptions" [nzLabel]="campus.nombre" [nzValue]="campus"></nz-option>
+      </nz-select>
+    </nz-col>
+    <nz-col *ngIf="selectedCampus" style="margin-left: 10px;">
+      <a style="font-size: large" (click)="editCampus()">
+        <i nz-icon [nzType]="'edit'" [nzTheme]="'twotone'"></i>
+      </a>
+      |
+      <a style="font-size: large;color: red"
+         nz-popconfirm
+         nzPopconfirmTitle="Are you sure delete this?"
+         nzPopconfirmPlacement="bottom"
+         (nzOnConfirm)="deleteCampus()">
+        <i nz-icon [nzType]="'delete'" [nzTheme]="'twotone'" [nzTwotoneColor]="'red'"></i>
+      </a>
+    </nz-col>
+    <nz-col nzOffset="1">
+      <label class="labelTitle">Aulas</label>
+    </nz-col>
+    <nz-col nzSpan="4" nzOffset="1">
+      <!--<nz-input-group [(ngModel)]="selectedAula">{{selectedAula?.nombre}}</nz-input-group>-->
+      <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select a campus" [(ngModel)]="selectedAula"
+                 [nzNotFoundContent]="templateAulas"
+                 [nzAllowClear]="false"
+                 [disabled]="!selectedCampus"
+                 (ngModelChange)="onSelectAula()">
+        <nz-option *ngFor="let aula of aulas" [nzLabel]="aula.nombre" [nzValue]="aula"></nz-option>
+      </nz-select>
+    </nz-col>
+    <nz-col *ngIf="selectedAula" style="margin-left: 10px;">
+      <a style="font-size: large" (click)="editCinema()"><i nz-icon [nzType]="'edit'" [nzTheme]="'twotone'"></i></a>
+      |
+      <a style="font-size: large;color: red"
+         nz-popconfirm
+         nzPopconfirmTitle="Are you sure delete this?"
+         nzPopconfirmPlacement="bottom"
+         (nzOnConfirm)="deleteCampus()">
+        <i nz-icon [nzType]="'delete'" [nzTheme]="'twotone'" [nzTwotoneColor]="'red'"></i>
+      </a>
+    </nz-col>
+  </nz-row>
+
+  <nz-spin [nzSpinning]="isLoadingReservas" *ngIf="listBookings">
+
+
+    <div style="background: #ECECEC;padding:30px; margin-top: 10px">
+      <div nz-row [nzGutter]="[8,16]">
+        <div nz-col nzXs="16" nzSm="16" nzMd="16" nzLg="16" nzXl="16"
+             *ngFor="let booking of listBookings;let indx=index">
+          <nz-card style="width: 100%;"
+                   *ngIf="booking;else noBooking"
+                   [nzTitle]="selectedAula.nombre"
+                   [nzExtra]="extraTemplate">
+            <nz-card-tab>
+              <nz-tabset nzSize="large" [(nzSelectedIndex)]="cardIndexes[indx]">
+                <!--<nz-tab nzTitle="Aula"></nz-tab>-->
+                <nz-tab nzTitle="Reservas"></nz-tab>
+              </nz-tabset>
+            </nz-card-tab>
+            <!--<nz-row *ngIf="cardIndexes[indx]===0" nzAlign="middle" nzJustify="space-around">-->
+              <!--<nz-col nzSpan="10">-->
+                <!--<a target="_blank" href="{{booking?.aulas[0].film.foto | pathToUrl}}">-->
+                  <!--<img [src]="booking?.periodoReservas[0].film.foto | pathToUrl"-->
+                       <!--alt="poster" width="150px">-->
+                <!--</a>-->
+
+              <!--</nz-col>-->
+              <!--<nz-col nzSpan="12">-->
+                <!--<nz-list nzBordered>-->
+                  <!--<nz-list-item>-->
+                    <!--<a routerLink="/movies/details/{{booking?.periodoReservas[0].film.id}}"-->
+                       <!--style="text-decoration: underline">-->
+                      <!--{{booking?.periodoReservas[0].film.nombre}}</a>-->
+                  <!--</nz-list-item>-->
+                  <!--<nz-list-item>-->
+                    <!--{{booking?.periodoReservas[0].film.nroAsientos | shortDescription:50}}-->
+                  <!--</nz-list-item>-->
+                  <!--<nz-list-item>-->
+                    <!--{{booking?.periodoReservas[0].film.nroAsientos}}min<i nz-icon nzType="clock-circle" nzTheme="outline"></i>-->
+                  <!--</nz-list-item>-->
+                  <!--<nz-list-item>-->
+                    <!--{{booking?.periodoReservas[0].film.nroFilas}}-->
+                    <!--<i nz-icon nzType="star" nzTheme="outline" [nzTheme]="'twotone'" [nzTwotoneColor]="'#E2B616'"></i>-->
+                  <!--</nz-list-item>-->
+
+                <!--</nz-list>-->
+              <!--</nz-col>-->
+            <!--</nz-row>-->
+            <!--<nz-row *ngIf="cardIndexes[indx]===1" [nzGutter]="[8,16]" nzAlign="middle">-->
+              <nz-row [nzGutter]="[8,16]" nzAlign="middle">
+              <nz-col nzFlex="2">
+                <nz-spin [nzSpinning]="isLoadingTickets">
+                  <!--<nz-row nzAlign="middle" *ngIf="showTickets(booking)" nzJustify="center" [nzGutter]="[8,8]"-->
+                  <!--<nz-row nzAlign="middle" nzJustify="center" style="margin-top: 20px;" [nzGutter]="[16]">-->
+                    <!--<nz-col *ngFor="let reserva of this.listBookings[0].reservas;let i = index" class="gutter-row" [nzSpan]="1">-->
+                      <!--<button nz-button nzType="primary" nzShape="circle" [disabled]="reserva?.reserve"-->
+                              <!--[style]="{backgroundColor: reserva.selected?'#28a745':'' }"-->
+                              <!--(click)="selectAsientoReserva(reserva)">{{i + 1}}</button>-->
+                    <!--</nz-col>-->
+                  <!--</nz-row>-->
+
+                  <mat-grid-list  cols="{{this.selectedAula.nroColumnas}}" rowHeight="2:1">
+                    <mat-grid-tile *ngFor="let reserva of this.listBookings[0].reservas;let i = index">
+                      <button #Button id="btn{{i+1}}" nz-button nzType="primary" nzShape="circle" [disabled]="reserva?.estadoReserva=='NO_DISPONIBLE'|| reserva?.estadoReserva=='RESERVADO'"
+                              [style]="{backgroundColor: reserva.selected?'#28a745':'' }"
+                              (click)="selectAsientoReserva(reserva)">{{i + 1}}</button>
+
+                    </mat-grid-tile>
+                  </mat-grid-list>
+
+
+                  <nz-row *ngIf="asientoReserva">
+                    <nz-col nzFlex="1" style="margin: 20px 10px;">
+                      <!--<label for="fullName">Full Name</label>
+                      <input nz-input style="margin: 10px 5px" placeholder="Full Name" id='fullName'
+                             [(ngModel)]="fullName"/>
+                      <label for="paymentNumber">Payment Number</label>
+                      <input nz-input style="margin: 10px 5px" placeholder="Payment Number" id='paymentNumber'
+                             [(ngModel)]="paymentNumber"/>-->
+                      <button nz-button nzType="default"
+                              (click)="confirmarReserva()">Reservar
+                      </button>
+                    </nz-col>
+                  </nz-row>
+
+                </nz-spin>
+              </nz-col>
+
+              <!--<nz-col nzFlex="1">-->
+                <!--<nz-list nzBordered>-->
+                  <!--<nz-list-item [ngClass]="isSelectedItem(booking)?'selected-item':''" class="list-item"-->
+                                <!--*ngFor="let booking of booking?.periodoReservas"-->
+                                <!--(click)="onSelectReserva(booking,booking)">-->
+                    <!--{{booking.seance.heureDebut|slice:0:5}}<span></span>-->
+                    <!--{{booking.prix}}DH-->
+                  <!--</nz-list-item>-->
+                <!--</nz-list>-->
+              <!--</nz-col>-->
+            </nz-row>
+          </nz-card>
+          <ng-template #noBooking>
+            <nz-card *ngIf="!isLoadingReservas"
+              style="width: 100%;"
+              [nzTitle]="booking.id"
+              [nzExtra]="extraTemplate"
+            >
+              <nz-row nzAlign="middle" nzJustify="middle">
+                <nz-col>
+                  <nz-alert
+                    nzType="info"
+                    nzMessage="No booking found"
+                    nzDescription="There is no active booking for the Room."
+                    nzShowIcon
+                  ></nz-alert>
+                </nz-col>
+              </nz-row>
+            </nz-card>
+          </ng-template>
+          <ng-template #extraTemplate>
+            <a style="font-size: large" (click)="showAddSalleModal(booking)">
+              <i nz-icon [nzType]="'edit'" [nzTheme]="'twotone'"></i>
+            </a> |
+            <a style="font-size: large;color: red"
+               nz-popconfirm
+               nzPopconfirmTitle="Are you sure delete this?"
+               nzPopconfirmPlacement="bottom"
+               (nzOnConfirm)="deleteRoom(booking)">
+              <i nz-icon [nzType]="'delete'" [nzTheme]="'twotone'" [nzTwotoneColor]="'red'"></i>
+            </a>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </nz-spin>
+</nz-spin>
+<nz-modal
+  [(nzVisible)]="isEditRoomModalVisible"
+  nzTitle="{{this.editRoomMode ? 'Update' : 'Add'}} Room"
+  (nzOnCancel)="handleEditRoomModal()"
+  (nzOnOk)="handleEditRoomModal()"
+>
+  <app-edit-room [room]="getSelectedRoom()"
+                 [opened]="this.isEditRoomModalVisible"></app-edit-room>
+</nz-modal>

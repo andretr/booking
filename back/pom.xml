@@ -8,11 +8,11 @@
         <version>2.3.0.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.anc</groupId>
-    <artifactId>cinema</artifactId>
+    <groupId>com.incae</groupId>
+    <artifactId>booking</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>cinema</name>
-    <description>Cinema project for Spring Boot</description>
+    <name>booking</name>
+    <description>Booking project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -49,7 +49,13 @@
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>9.2.1.jre8</version>
+            <version>9.2.0.jre8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc_auth</artifactId>
+            <version>9.2.0.x64</version>
+            <type>dll</type>
         </dependency>
 
         <dependency>
@@ -81,6 +87,24 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-dependency-plugin</artifactId>-->
+                <!--<version>3.1.2</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>copy-dependencies</id>-->
+                        <!--<phase>prepare-package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>copy-dependencies</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<outputDirectory>${project.build.directory}/</outputDirectory>-->
+                            <!--<includeArtifactIds>mssql-jdbc_auth</includeArtifactIds>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

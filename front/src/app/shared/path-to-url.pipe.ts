@@ -1,15 +1,15 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {CinemaService} from '../Service/cinema.service';
+import {BookingService} from '../Service/booking.service';
 
 @Pipe({
   name: 'pathToUrl'
 })
 export class PathToUrlPipe implements PipeTransform {
-  constructor(private cinemaService: CinemaService) {
+  constructor(private bookingService: BookingService) {
   }
 
   transform(value: string): string {
-    return this.cinemaService.baseUrl + 'image-by-name/' + value;
+    return this.bookingService.baseUrl + 'image-by-name/' + value;
   }
 
 }

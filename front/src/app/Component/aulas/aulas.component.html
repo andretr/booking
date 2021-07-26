@@ -1,0 +1,55 @@
+<nz-row *ngIf="aulas" nzJustify="end" nzAlign="middle">
+  <nz-col>
+    <label>
+      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" nz-input placeholder="Buscar Aula"/>
+      </nz-input-group>
+      <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>
+      </ng-template>
+    </label>
+  </nz-col>
+  <nz-col nzOffset="1">
+    <button nz-button nzType="primary" nzSize="large" (click)="goToAddAula()">Agregar Aula</button>
+  </nz-col>
+</nz-row>
+<nz-spin [nzSpinning]="isLoading" style="margin-top: 10px">
+  <div *ngIf="aulas;else noData">
+    <nz-row nzJustify="space-around" nzAlign="middle" [nzGutter]="[16,16]">
+      <nz-col *ngFor="let aula of aulas" nzXl="8" nzLg="8" nzMd="12" nzSm="24">
+        <nz-card style="width:300px;height: 100px" [nzCover]="coverTemplate"
+                 [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
+          <nz-card-meta nzTitle="{{aula.nombre}}"
+                        nzDescription="{{aula.nroAsientos| shortDescription:50}}"></nz-card-meta>
+        </nz-card>
+        <ng-template #coverTemplate>
+          <img alt="example" src="{{aula.foto | pathToUrl}}"/>
+        </ng-template>
+        <ng-template #actionSetting>
+          <i (click)="goToDetails(aula.id)"
+             style="color: #40A9FF">Details</i>
+        </ng-template>
+        <ng-template #actionEdit>
+          <i nz-icon nzType="edit" (click)="editMovie(aula.id)" [nzTheme]="'twotone'" [nzTwotoneColor]="'green'"></i>
+        </ng-template>
+        <ng-template #actionEllipsis>
+          <i nz-icon nzType="delete" (click)="deleteMovie(aula.id)" [nzTheme]="'twotone'" [nzTwotoneColor]="'red'"></i>
+        </ng-template>
+      </nz-col>
+    </nz-row>
+    <nz-row nzJustify="center" nzAlign="middle" style="margin-top: 10px">
+      <nz-pagination [nzPageIndex]="pageIndex" [nzTotal]="totalElements" nzShowSizeChanger
+                     [nzPageSize]="pageSize"
+                     (nzPageIndexChange)="getAulas(false)"
+                     (nzPageSizeChange)="getAulas(true)">
+      </nz-pagination>
+    </nz-row>
+  </div>
+  <ng-template #noData>
+    <nz-result *ngIf="!isLoading" nzStatus="info" nzTitle="No se encontraron Aulas">
+      <div nz-result-extra>
+        <button nz-button nzType="primary" (click)="goToAddAula()">Agregar Aula</button>
+      </div>
+    </nz-result>
+  </ng-template>
+</nz-spin>

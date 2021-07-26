@@ -1,5 +1,9 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatTableModule} from '@angular/material/table';
+
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -13,16 +17,17 @@ import {NgZorroAntdModule, NzLayoutModule} from 'ng-zorro-antd';
 import {TicketsComponent} from './Component/tickets/tickets.component';
 import {BreadcrumbComponent} from './Component/breadcrumb/breadcrumb.component';
 import {HomeComponent} from './Component/home/home.component';
-import {MoviesComponent} from './Component/movies/movies.component';
-import {CinemasComponent} from './Component/cinemas/cinemas.component';
+import {AulasComponent} from './Component/aulas/aulas.component';
+import {BookingsComponent} from './Component/bookings/bookings.component';
 import {CarouselComponent} from './Component/home/carousel/carousel.component';
 import {ShortDescriptionPipe} from './Service/short-description.pipe';
 import {PathToUrlPipe} from './shared/path-to-url.pipe';
-import { AddMovieComponent } from './Component/movies/add-movie/add-movie.component';
-import { MovieDetailsComponent } from './Component/movies/movie-details/movie-details.component';
-import { AddCityComponent } from './Component/cinemas/add-city/add-city.component';
-import { CinemaFormComponent } from './Component/cinemas/cinema-form/cinema-form.component';
-import { EditRoomComponent } from './Component/cinemas/edit-room/edit-room.component';
+import {AddAulaComponent} from './Component/aulas/add-movie/add-aula.component';
+import {AulaDetailsComponent} from './Component/aulas/aula-details/aula-details.component';
+import {AddCampusComponent} from './Component/bookings/add-city/add-campus.component';
+import {CampusFormComponent} from './Component/bookings/campus-form/campus-form.component';
+import {EditRoomComponent} from './Component/bookings/edit-room/edit-room.component';
+
 
 registerLocaleData(en);
 
@@ -32,15 +37,15 @@ registerLocaleData(en);
     TicketsComponent,
     BreadcrumbComponent,
     HomeComponent,
-    MoviesComponent,
-    CinemasComponent,
+    AulasComponent,
+    BookingsComponent,
     CarouselComponent,
     ShortDescriptionPipe,
     PathToUrlPipe,
-    AddMovieComponent,
-    MovieDetailsComponent,
-    AddCityComponent,
-    CinemaFormComponent,
+    AddAulaComponent,
+    AulaDetailsComponent,
+    AddCampusComponent,
+    CampusFormComponent,
     EditRoomComponent
   ],
   imports: [
@@ -51,7 +56,10 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     NzLayoutModule,
     NgZorroAntdModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatButtonToggleModule,
+    MatTableModule
   ],
   providers: [{provide: NZ_I18N, useValue: en_US}],
   bootstrap: [AppComponent]

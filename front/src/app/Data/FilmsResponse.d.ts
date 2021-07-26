@@ -1,23 +1,21 @@
 ﻿import {Href} from './CinemasResponse';
 
-export interface FilmsResponse {
+export interface AulasResponse {
   _embedded: Embedded;
   _links: Links;
   page: Page;
 }
 
 export interface Embedded {
-  films?: (Film)[] | null;
+  aulas?: (Aula)[] | null;
 }
 
-export interface Film {
+export interface Aula {
   id: number;
-  titre: string;
-  description: string;
-  realisateur?: null;
-  dateSortie?: null;
-  dure: number;
-  rating: number;
+  nombre: string;
+  nroAsientos: number;
+  nroFilas: number;
+  nroColumnas: number;
   photo: string;
   _links: FilmLinks;
 }

@@ -1,0 +1,56 @@
+<nz-spin [nzSpinning]="isLoading">
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item *ngIf="aula?.foto">
+      <nz-form-label [nzSm]="6" [nzXs]="24">Current Image</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8">
+        <a href="{{aula.foto | pathToUrl}}" target="_blank">
+          <img src="{{aula.foto | pathToUrl}}" alt="current image" height="300px">
+        </a>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="image" [nzRequired]="!modifyMode">Image</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8">
+        <nz-upload
+          nzType="drag"
+          id="image"
+          [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload" [nzLimit]="1" [nzDisabled]="isLoading">
+          <p class="ant-upload-drag-icon">
+            <i nz-icon nzType="inbox"></i>
+          </p>
+          <p class="ant-upload-text">Presione o Arrastre una imagen para cargar.</p>
+        </nz-upload>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>Nombre</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8" nzErrorTip="Debe ingresar nombre">
+        <input nz-input id="name" formControlName="nombre" placeholder="nombre"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="noAsientos" nzRequired>No. Asientos</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8" nzErrorTip="Debe ingresar el No. de Asientos">
+        <input nz-input id="noAsientos" formControlName="nroAsientos" type="number"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="noFilas" nzRequired>No. Filas</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8" nzErrorTip="Debe ingresar el No. de Filas">
+        <input nz-input id="noFilas" formControlName="nroFilas" type="number"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="noColumnas" nzRequired>No. Columnas</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8" nzErrorTip="Debe ingresar el No. de Columnas">
+        <input nz-input id="noColumnas" formControlName="nroColumnas" type="number"/>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" [disabled]="!validateForm.valid || (!modifyMode && fileList.length===0)">Agregar Aula
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-spin>

@@ -1,30 +1,40 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {MoviesComponent} from './Component/movies/movies.component';
-import {CinemasComponent} from './Component/cinemas/cinemas.component';
-import {MovieDetailsComponent} from "./Component/movies/movie-details/movie-details.component";
-import {AddMovieComponent} from "./Component/movies/add-movie/add-movie.component";
-import {CinemaFormComponent} from "./Component/cinemas/cinema-form/cinema-form.component";
+import {AulasComponent} from './Component/aulas/aulas.component';
+import {BookingsComponent} from './Component/bookings/bookings.component';
+import {AulaDetailsComponent} from "./Component/aulas/aula-details/aula-details.component";
+import {AddAulaComponent} from "./Component/aulas/add-movie/add-aula.component";
+import {CampusFormComponent} from "./Component/bookings/campus-form/campus-form.component";
+import {log} from "ng-zorro-antd";
 
 
 const routes: Routes = [
-  {
-    path: '', redirectTo: '/cinemas', pathMatch: 'full',
+ {
+    path: '', redirectTo: 'bookings', pathMatch: 'full',
   },
   {
-    path: 'movies',
+    path: 'aulas',
     children: [
-      {path: '', component: MoviesComponent},
-      {path: 'add', component: AddMovieComponent},
-      {path: 'details/:id', component: MovieDetailsComponent},
-      {path: 'modify/:id', component: AddMovieComponent}
+      {path: '', component: AulasComponent},
+      {path: 'add', component: AddAulaComponent},
+      {path: 'details/:id', component: AulaDetailsComponent},
+      {path: 'modify/:id', component: AddAulaComponent}
     ]
   },
   {
-    path: 'cinemas',
+    path: 'bookings',
     children: [
-      {path: '', component: CinemasComponent},
-      {path: 'add', component: CinemaFormComponent},
+      {path: '', component: BookingsComponent},
+      {path: 'add', component: CampusFormComponent},
+    ]
+  }
+  ,
+
+  {
+    path: 'campuses',
+    children: [
+      {path: '', component: BookingsComponent},
+      {path: 'add', component: CampusFormComponent},
     ]
   }
   ,

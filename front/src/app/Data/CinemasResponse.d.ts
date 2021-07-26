@@ -22,7 +22,7 @@ export interface CinemaEntityLinks {
   self: Href;
   cinema: Href;
   ville: Href;
-  salles: Href;
+  aulas: Href;
 }
 
 export interface Href {
