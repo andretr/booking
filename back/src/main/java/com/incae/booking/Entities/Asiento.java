@@ -16,11 +16,12 @@ public class Asiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private int numero;
 
-//    private double longitude, latitude, altitude;
     @ManyToOne()
     private Aula aula;
+
     @OneToMany(mappedBy = "asiento")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Collection<Reserva> reservas;

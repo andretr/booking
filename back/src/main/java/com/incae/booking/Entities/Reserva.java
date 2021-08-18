@@ -23,6 +23,7 @@ public class Reserva {
 //    private Integer codAlumno;
     @Enumerated(EnumType.STRING)
     private EstadoReserva estadoReserva;
+
     private boolean preferencial;
     @ManyToOne
     private Asiento asiento;

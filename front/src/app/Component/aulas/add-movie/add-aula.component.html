@@ -23,6 +23,17 @@
       </nz-form-control>
     </nz-form-item>
     <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>Campus</nz-form-label>
+      <!--<nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8"  nzErrorTip="Debe ingresar un campus">-->
+        <!--<nz-select nzAllowClear nzPlaceHolder="Seleccionar campus"-->
+                   <!--formControlName="campus"-->
+                   <!--[nzNotFoundContent]="templateCampus"-->
+                   <!--[nzAllowClear]="false">-->
+          <!--<nz-option *ngFor="let campus of campusOptions" [nzLabel]="campus.nombre" [nzValue]="campus"></nz-option>-->
+        <!--</nz-select>-->
+      <!--</nz-form-control>-->
+    </nz-form-item>
+    <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="name" nzRequired>Nombre</nz-form-label>
       <nz-form-control [nzSm]="14" [nzXs]="24" [nzXl]="8" nzErrorTip="Debe ingresar nombre">
         <input nz-input id="name" formControlName="nombre" placeholder="nombre"/>

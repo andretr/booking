@@ -25,12 +25,12 @@ public class BookingApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         repositoryRestConfiguration.exposeIdsFor(Campus.class, Clase.class, Reserva.class, Aula.class);
-        cinemaService.initCampuses();
-        cinemaService.initAulas();
-        cinemaService.initAsientos();
-        cinemaService.initClases();
-        cinemaService.initBookings();
-        cinemaService.initReservas();
+//        cinemaService.initCampuses();
+//        cinemaService.initAulas();
+//        cinemaService.initAsientos();
+//        cinemaService.initClases();
+//        cinemaService.initBookings();
+//        cinemaService.initReservas();
 
     }
 }

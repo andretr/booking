@@ -44,6 +44,8 @@ public class BookingRestController {
     BookingRepository bookingRepository;
     @Autowired
     AulaRepository aulaRepository;
+    @Autowired
+    EstudianteRepository estudianteRepository;
 
 
     @GetMapping(path = "/campus")
@@ -115,16 +117,25 @@ public class BookingRestController {
 
 
     @PostMapping(path = "reservarAsiento")
-    public Reserva reservarAsientos(@RequestBody ReservarAsientosForm reservarAsientosForm) {
+    public ResponseEntity<Reserva> reservarAsientos(@RequestBody ReservarAsientosForm reservarAsientosForm) {
 
             System.out.println("reservarAsiento= " + reservarAsientosForm);
-            Reserva reserva = reservaRepository.findByBookingAndAsiento(reservarAsientosForm.getIdBooking().longValue(),
-                    reservarAsientosForm.getNroAsiento());
-            reserva.setNombreAlumno("Oscar Andre Ticona Rollano");
-            reserva.setEstadoReserva(EstadoReserva.RESERVADO);
-            reserva.setCodigoAlumno(reservarAsientosForm.getCodAlumno());
-            reservaRepository.save(reserva);
-            return reserva;
+            Reserva reserva = reservaRepository.findById(reservarAsientosForm.getIdReserva().longValue()).orElse(null);
+            if(reserva == null){
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Id de reserva no encontrado");
+            }
+        Estudiante estudiante = estudianteRepository.findById(reservarAsientosForm.getCodAlumno()).orElse(null);
+        if(estudiante == null){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Id de estudiante no encontrado");
+        }
+
+        reserva.setNombreAlumno(estudiante.getNombre().concat(" ").concat(estudiante.getApellido()));
+        reserva.setEstadoReserva(EstadoReserva.RESERVADO);
+        reserva.setCodigoAlumno(reservarAsientosForm.getCodAlumno());
+        reservaRepository.save(reserva);
+            return new ResponseEntity(reserva, HttpStatus.CREATED);
     }
 
     @PostMapping(path = "/addAula")
@@ -198,9 +209,8 @@ public class BookingRestController {
 @Data
 @ToString
 class ReservarAsientosForm {
-    private Integer idBooking;
     private String codAlumno;
-    private Integer nroAsiento;
+    private Integer idReserva;
 }
 
 @Data

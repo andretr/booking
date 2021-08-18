@@ -16,7 +16,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     @Query(
             "FROM INCAE_BK_Reserva a " +
             "WHERE a.booking.id = :idBooking " +
-            "AND a.asiento.numero = :idAsiento"
+            "AND a.id = :idReserva"
     )
-    Reserva findByBookingAndAsiento(Long idBooking, Integer idAsiento);
+    Reserva findByBookingAndReserva(Long idBooking, Long idReserva);
 }

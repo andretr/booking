@@ -47,7 +47,7 @@ export class BookingService {
     return this.http.get(url);
   }
 
-  confirmarReserva(p: { idBooking: number; codAlumno: string; nroAsiento: number }) {
+  confirmarReserva(p: { codAlumno: string; idReserva: number }) {
     console.log("Calling reservarAsiento", p);
     return this.http.post(this.baseUrl + 'reservarAsiento', p);
   }

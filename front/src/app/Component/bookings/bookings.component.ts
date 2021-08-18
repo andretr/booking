@@ -14,7 +14,7 @@ export class BookingsComponent implements OnInit {
   @ViewChildren('Button',{ read: ElementRef }) buttons: QueryList<any>;
 
   campusOptions: Array<{ id: number; nombre: string; aulas: string }> = [];
-  codEstudiante='08123456789';
+  codEstudiante='081357307';
   selectedCampus = null;
   isLoading = false;
   isLoadingReservas = false;
@@ -111,13 +111,12 @@ export class BookingsComponent implements OnInit {
     return this.selectdAula && this.selectdAula.id === salle.id && this.selectedReserva != null;
   }
 
-  selectAsientoReserva(asiento: any) {
-    asiento.selected = !asiento.selected;
+  selectAsientoReserva(reserva: any) {
+    console.log('OBJ reserva '+ JSON.stringify(reserva));
+    reserva.selected = !reserva.selected;
 
     this.buttons.forEach(
       (el) => {
-
-
         if(!el.nativeElement.disabled){
           this.renderer.setStyle(el.nativeElement,'background-color', '#1890ff');
           this.renderer.setProperty(el.nativeElement, 'selected', 'false');
@@ -126,9 +125,10 @@ export class BookingsComponent implements OnInit {
       }
     );
 
-     if (asiento.selected) {
+     if (reserva.selected) {
       // this.asientoReserva.push(asiento.id);
-      this.asientoReserva = asiento.id;
+      this.asientoReserva = reserva.id;
+      console.log('Asiento reserva '+ this.asientoReserva);
     } else {
       // this.asientoReserva.splice(this.asientoReserva.indexOf(asiento.id), 1);
       this.asientoReserva = null;
@@ -153,9 +153,8 @@ export class BookingsComponent implements OnInit {
 
   confirmarReserva() {
     this.bookingService.confirmarReserva({
-      idBooking: this.idBooking,
       codAlumno: this.codEstudiante,
-      nroAsiento: this.asientoReserva
+      idReserva: this.asientoReserva
     })
       .subscribe((result: any[]) => {
           this.message.success('Ordered successfully !');
@@ -194,7 +193,7 @@ export class BookingsComponent implements OnInit {
         this.campusOptions = [];
         // @ts-ignore
         result._embedded.campuses.forEach(v => {
-          console.log("Object: ", v);
+          console.log("Campuses Object: ", v);
           this.campusOptions.push({id: v.id, nombre: v.nombre, aulas: v._links.aulas});
         });
       }, this.errorFunc, () =>
